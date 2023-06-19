@@ -38,18 +38,18 @@ def main():
 
 
     if scelta == "1":
-        resnet18 = MyModel(num_classes=3, Trained=False)
+        model= MyModel(num_classes=3, Trained=False)
         # Define an optimizer
-        optimizer = optim.SGD(resnet18.fc.parameters(), lr = 0.005, weight_decay = 0.008)
+        optimizer = optim.SGD(model.resnet.fc.parameters(), lr = 0.005, weight_decay = 0.008)
         # Define a loss
         criterion = nn.CrossEntropyLoss()
         # Train the model
-        resnet18.train_model(loaders, optimizer, criterion, num_epochs=200, save_param = True, dev=dev)
+        model.train(loaders, optimizer, criterion, epochs=200, save_param = True, dev=dev)
     elif scelta == "2":
-        resnet18 = MyModel(num_classes=3, Trained=True)
+        model = MyModel(num_classes=3, Trained=True)
         # Test the model
         print("Modello caricato")
-        test_loss, test_accuracy, confusion_matrix, num_classes = resnet18.test(loaders, criterion=nn.CrossEntropyLoss(), dev=dev)
+        test_loss, test_accuracy, confusion_matrix, num_classes = model.test(loaders, criterion=nn.CrossEntropyLoss(), dev=dev)
         print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
         print("Chiudere la matrice di confusione per continuare")
         # Plot confusion matrix
