@@ -9,8 +9,9 @@ import matplotlib.pyplot as plt
 
 def main():
     print("Caricamento dataset...")
-    # Compose transformations
-    dataset = ChestXrayDataset(img_dir='/Users/ale_strange/Desktop/dvntn9yhd2-1/aunione')
+
+    #INSERIRE PERCORSO DEL DATASET
+    dataset = ChestXrayDataset(img_dir='')
     print("Dataset caricato")
 
     num_train = dataset.get_trainset().__len__()

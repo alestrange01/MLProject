@@ -18,7 +18,8 @@ import io
 from io import BytesIO
 
 print("Caricamento dataset...")
-dataset = ChestXrayDataset(img_dir='/Users/ale_strange/Desktop/dvntn9yhd2-1/aunione', transform=None)
+#INSERIRE PERCORSO DEL DATASET
+dataset = ChestXrayDataset(img_dir='', transform=None)
 print("Dataset caricato")
 print("Proseguire nella GUI")
 
