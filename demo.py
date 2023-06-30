@@ -9,7 +9,7 @@ import torch
 import tkinter as tk
 from PIL import ImageTk, Image
 import numpy as np
-from captum.attr import IntegratedGradients, LayerGradCam, LayerAttribution, NoiseTunnel
+from captum.attr import IntegratedGradients, NoiseTunnel
 from captum.attr import visualization as viz
 from captum.attr import NoiseTunnel
 from matplotlib import cm
@@ -17,13 +17,15 @@ import torchvision.transforms.functional as TF
 import io
 from io import BytesIO
 
-
+print("Caricamento dataset...")
 dataset = ChestXrayDataset(img_dir='/Users/ale_strange/Desktop/dvntn9yhd2-1/aunione', transform=None)
+print("Dataset caricato")
+print("Proseguire nella GUI")
 
 # %%
 data_transform = transforms.Compose([
-                            transforms.RandomHorizontalFlip(1), 
-                            transforms.RandomVerticalFlip(1),
+                            #transforms.RandomHorizontalFlip(1), 
+                            #transforms.RandomVerticalFlip(1),
                             transforms.Resize((224,224)),
                             transforms.ToTensor(),
                             transforms.Normalize(0.5, 0.5)
@@ -39,7 +41,7 @@ idx_to_labels = {0: 'normal', 1: 'pneumonia', 2: 'covid'}
 # %%
 model = MyModel(num_classes=3, Trained=True)
 
-# Generate Grad-CAM activation map
+
 integrated_gradients = IntegratedGradients(model)
 noise_tunnel = NoiseTunnel(integrated_gradients)
 
@@ -73,8 +75,6 @@ def show_map(input_img, pred_label_idx):
 
     # Crea un oggetto PhotoImage
     photo_image = ImageTk.PhotoImage(resized)
-    # aggiungere l'immagine della mappa di attivazione a canvas2
-    # Aggiungi l'immagine a canvas2
     canvas2.create_image(0, 0, anchor="nw", image=photo_image)
     canvas2.image = photo_image
     canvas2.pack()
@@ -86,11 +86,8 @@ def plot_random_image(class_name):
     img = class_name[random_index]
 
     img = np.asarray(img)
-
-    
     img_tk = ImageTk.PhotoImage(Image.fromarray(img))
 
-    # Disegna l'immagine nel canvas
     canvas.create_image(0, 0, anchor="nw", image=img_tk)
     canvas.image = img_tk  
 
@@ -141,16 +138,11 @@ x = int((screen_width / 2) - (window_width / 2))
 y = int((screen_height / 2) - (window_height / 2))
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-
-
 # Testo introduttivo
 intro_label = tk.Label(window, text="Benvenuti nella Demo di 'Chest XRay Illness Detector' \n Avrete anche la possibilità di capire sulla base di cosa "+
                        "è stata fatta la predizione (Attenzione: generare l'Activation Map potrebbe richiedere fino ad un minuto). \n" +
                        "Scegli una classe di immagine da testare:", wraplength=500, pady=5)
 intro_label.pack()
-
-
-
 
 var = tk.StringVar()
 option1 = tk.Radiobutton(window, text="NORMAL", variable=var, value="normal")
@@ -164,27 +156,20 @@ option3.pack()
 confirm_button = tk.Button(window, text="Elabora", command=conferma)
 confirm_button.pack()
 
-
 # Canvas per disegnare l'immagine
 canvas = tk.Canvas(window, width=224, height=224)
 canvas.pack()
-
-
 
 # Per il risultato
 result_label = tk.Label(window, text="")
 result_label.pack()
 
-# Crea il secondo bottone "Clicca qui" e associa la funzione show_map
+# Crea il secondo bottone "Clicca qui"
 map_button = tk.Button(window, text="Mostra Activation Map")
-
-
 
 # Canvas per disegnare l'attivazione
 canvas2 = tk.Canvas(window, width=300, height=300)
 
-
-# Avvia la finestra principale
 window.mainloop()
 
 

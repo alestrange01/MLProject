@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, f1_score, recall_score
 import numpy as np
 
 
@@ -145,4 +145,8 @@ class MyModel(nn.Module):
         # Normalize the confusion matrix
         confusion_norm = confusion.astype('float') / confusion.sum(axis=1)[:, np.newaxis]
         
-        return test_loss, test_accuracy, confusion_norm, num_classes
+        # Calculate F1 score and recall
+        f1 = f1_score(true_labels, predicted_labels, average='macro')
+        recall = recall_score(true_labels, predicted_labels, average='macro')
+
+        return test_loss, test_accuracy, confusion_norm, num_classes, f1, recall

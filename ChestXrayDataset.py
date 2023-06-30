@@ -1,11 +1,12 @@
 import os
+import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Dataset, DataLoader
 
-
+torch.manual_seed(333)
 # Definire una classe custom per il dataset
 class ChestXrayDataset(Dataset):
     def __init__(self, img_dir, transform=True):
@@ -13,8 +14,8 @@ class ChestXrayDataset(Dataset):
 
         if(transform):
             self.transform = transforms.Compose([
-                            transforms.RandomHorizontalFlip(1), 
-                            transforms.RandomVerticalFlip(1),
+                            transforms.RandomHorizontalFlip(0.5), 
+                            transforms.RandomVerticalFlip(0.5),
                             transforms.Resize((224,224)),
                             transforms.ToTensor(),
                             transforms.Normalize(0.5, 0.5)

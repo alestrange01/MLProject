@@ -49,8 +49,11 @@ def main():
         model = MyModel(num_classes=3, Trained=True)
         # Test the model
         print("Modello caricato")
-        test_loss, test_accuracy, confusion_matrix, num_classes = model.test(loaders, criterion=nn.CrossEntropyLoss(), dev=dev)
+        print("Test in corso...")
+        test_loss, test_accuracy, confusion_matrix, num_classes, f1, recall = model.test(loaders, criterion=nn.CrossEntropyLoss(), dev=dev)
         print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
+        print(f"F1: {f1:.4f}")
+        print(f"Recall: {recall:.4f}")
         print("Chiudere la matrice di confusione per continuare")
         # Plot confusion matrix
         plt.figure(figsize=(10, 8))
